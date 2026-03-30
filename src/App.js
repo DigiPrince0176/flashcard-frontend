@@ -107,37 +107,37 @@ if (completed) {
   );
 }
 
-  return (
+return (
   <div className="app">
 
     {completed && (
-  <Confetti
-    width={window.innerWidth}
-    height={window.innerHeight}
-     />
+      <Confetti
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
     )}
 
     <Particles
-  className="particles"
-  style={{
-    position: "fixed",
-    zIndex: 0,
-    pointerEvents: "none"
-  }}
-  options={{
-    particles: {
-      number: { value: 60 },
-      size: { value: 3 },
-      move: { speed: 0.5 },
-      opacity: { value: 0.2 },
-      links: {
-        enable: true,
-        color: "#ffffff",
-        opacity: 0.2
-      }
-    }
-  }}
-/>
+      className="particles"
+      style={{
+        position: "fixed",
+        zIndex: 0,
+        pointerEvents: "none"
+      }}
+      options={{
+        particles: {
+          number: { value: 60 },
+          size: { value: 3 },
+          move: { speed: 0.5 },
+          opacity: { value: 0.2 },
+          links: {
+            enable: true,
+            color: "#ffffff",
+            opacity: 0.2
+          }
+        }
+      }}
+    />
 
     <div className="top-section">
       <h1>Flashcards</h1>
@@ -145,51 +145,63 @@ if (completed) {
       <div className="progress-bar">
         <div
           className="progress-fill"
-          style={{ width: `${((index + 1) / cards.length) * 100}%` }}
+          style={{
+            width: cards.length
+              ? `${((index + 1) / cards.length) * 100}%`
+              : "0%"
+          }}
         ></div>
       </div>
     </div>
 
     <div className="card-container">
 
-  <div className={`card-wrapper ${direction} ${animating ? "animate" : ""}`}>
-      <Flashcard
-        key={cards[index].id}
-        question={cards[index].question}
-        answer={cards[index].answer}
-        direction={direction}
-        onRate={nextCard}
-      />
-  </div>
+      {/* ✅ FIX: Prevent crash when data not loaded */}
+      {cards.length > 0 && (
+        <>
+          <div className={`card-wrapper ${direction} ${animating ? "animate" : ""}`}>
+            <Flashcard
+              key={cards[index]?.id}
+              question={cards[index]?.question}
+              answer={cards[index]?.answer}
+              direction={direction}
+              onRate={nextCard}
+            />
+          </div>
 
-  {/* ✅ MOVE BUTTONS HERE */}
-<div className="buttons">
-  <button onClick={goToFirst} disabled={index === 0}>⏮ First</button>
+          <div className="buttons">
+            <button onClick={goToFirst} disabled={index === 0}>⏮ First</button>
 
-  <button onClick={prevCard} disabled={index === 0}>← Prev</button>
+            <button onClick={prevCard} disabled={index === 0}>← Prev</button>
 
-  <button 
-    onClick={() => {
-      if (index === cards.length - 1) {
-        setCompleted(true);
-      } else {
-        nextCard();
-      }
-    }}
-  >
-    {index === cards.length - 1 ? "Complete ✅" : "Next →"}
-  </button>
+            <button
+              onClick={() => {
+                if (index === cards.length - 1) {
+                  setCompleted(true);
+                } else {
+                  nextCard();
+                }
+              }}
+            >
+              {index === cards.length - 1 ? "Complete ✅" : "Next →"}
+            </button>
 
-  <button 
-    onClick={goToLast} 
-    disabled={index === cards.length - 1}
-  >
-    Last ⏭
-  </button>
-</div>
+            <button
+              onClick={goToLast}
+              disabled={index === cards.length - 1}
+            >
+              Last ⏭
+            </button>
+          </div>
+        </>
+      )}
 
+      {/* ✅ Optional loading state */}
+      {cards.length === 0 && (
+        <p style={{ color: "white" }}>Loading flashcards...</p>
+      )}
 
-</div>
+    </div>
 
   </div>
 );

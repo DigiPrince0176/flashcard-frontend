@@ -14,76 +14,80 @@ function App() {
   const [animating, setAnimating] = useState(false);
   const [completed, setCompleted] = useState(false);
 
+  // ✅ API CALL
   useEffect(() => {
-    axios.get("https://flashcard-backend-2-oozm.onrender.com/api/flashcards")
+    axios
+      .get("https://flashcard-backend-2-oozm.onrender.com/api/flashcards")
       .then(res => setCards(res.data))
       .catch(err => console.error(err));
-      }, []);
+  }, []);
 
-useEffect(() => {
-  const handleKey = (e) => {
-    if (e.key === "ArrowRight") nextCard();
-    if (e.key === "ArrowLeft") prevCard();
+  // ✅ FUNCTIONS FIRST
+  const nextCard = () => {
+    if (animating) return;
+
+    if (index === cards.length - 1) {
+      setCompleted(true);
+      return;
+    }
+
+    setDirection("next");
+    setAnimating(true);
+
+    setTimeout(() => {
+      setIndex((prev) => (prev + 1) % cards.length);
+      setAnimating(false);
+    }, 250);
   };
 
-  window.addEventListener("keydown", handleKey);
-  return () => window.removeEventListener("keydown", handleKey);
-}, [cards, nextCard, prevCard]);
+  const prevCard = () => {
+    if (animating) return;
 
-const nextCard = () => {
-  if (animating) return;
+    setDirection("prev");
+    setAnimating(true);
 
-  // ✅ LAST CARD → COMPLETE
-  if (index === cards.length - 1) {
-    setCompleted(true);
-    return;
-  }
+    setTimeout(() => {
+      setIndex((prev) => (prev - 1 + cards.length) % cards.length);
+      setAnimating(false);
+    }, 250);
+  };
 
-  setDirection("next");
-  setAnimating(true);
+  const goToFirst = () => {
+    if (animating) return;
 
-  setTimeout(() => {
-    setIndex((prev) => (prev + 1) % cards.length);
-    setAnimating(false);
-  }, 250);
-};
+    setDirection("prev");
+    setAnimating(true);
 
-const prevCard = () => {
-  if (animating) return;
+    setTimeout(() => {
+      setIndex(0);
+      setAnimating(false);
+    }, 300);
+  };
 
-  setDirection("prev");
-  setAnimating(true);
+  const goToLast = () => {
+    if (animating) return;
 
-  setTimeout(() => {
-    setIndex((prev) => (prev - 1 + cards.length) % cards.length);
-    setAnimating(false);
-  }, 250);
-};
-  
-const goToFirst = () => {
-  if (animating) return;
+    setDirection("next");
+    setAnimating(true);
 
-  setDirection("prev");
-  setAnimating(true);
+    setTimeout(() => {
+      setIndex(cards.length - 1);
+      setAnimating(false);
+    }, 300);
+  };
 
-  setTimeout(() => {
-    setIndex(0);
-    setAnimating(false);
-  }, 300);
-};
+  // ✅ KEYBOARD EFFECT (AFTER FUNCTIONS)
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "ArrowRight") nextCard();
+      if (e.key === "ArrowLeft") prevCard();
+    };
 
-const goToLast = () => {
-  if (animating) return;
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [index, cards]); // simplified dependency
 
-  setDirection("next");
-  setAnimating(true);
-
-  setTimeout(() => {
-    setIndex(cards.length - 1);
-    setAnimating(false);
-  }, 300);
-};
-
+  // ✅ LOADING CHECK
   if (cards.length === 0) return <p>Loading...</p>;
 
 

@@ -1,214 +1,252 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Flashcard from "./Flashcard";
+import FlashcardApp from "./FlashcardApp";
 import "./App.css";
-import Particles from "react-tsparticles";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
-
 
 function App() {
-  const [cards, setCards] = useState([]);
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState("next");
-  const [animating, setAnimating] = useState(false);
-  const [completed, setCompleted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // ✅ API CALL
+  // 👉 Separate user form state (IMPORTANT FIX)
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [role, setRole] = useState("user");
+
+  const [users, setUsers] = useState([]);
+
+  // Flashcards
+  const [cards, setCards] = useState([]);
+  const [form, setForm] = useState({ question: "", answer: "" });
+  const [editingId, setEditingId] = useState(null);
+
+  // ================= USERS =================
+
+  const fetchUsers = async () => {
+    const res = await fetch("http://localhost:8080/api/users");
+    const data = await res.json();
+    setUsers(data);
+  };
+
+  const addUser = async () => {
+    await fetch("http://localhost:8080/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: newUsername,
+        password: newPassword,
+        role
+      })
+    });
+
+    alert("User Added ✅");
+    setNewUsername("");
+    setNewPassword("");
+    fetchUsers();
+  };
+
+  const deleteUser = async (id) => {
+    await fetch(`http://localhost:8080/api/users/${id}`, {
+      method: "DELETE"
+    });
+    fetchUsers();
+  };
+
+  // ================= FLASHCARDS =================
+
   useEffect(() => {
     axios
-      .get("https://flashcard-backend-2-oozm.onrender.com/api/flashcards")
-      .then(res => setCards(res.data))
-      .catch(err => console.error(err));
+      .get("http://localhost:8080/api/flashcards")
+      .then((res) => setCards(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
-  // ✅ FUNCTIONS FIRST
-  const nextCard = () => {
-    if (animating) return;
+  const addCard = async () => {
+    const res = await axios.post(
+      "http://localhost:8080/api/flashcards",
+      form
+    );
+    setCards([...cards, res.data]);
+    setForm({ question: "", answer: "" });
+  };
 
-    if (index === cards.length - 1) {
-      setCompleted(true);
-      return;
+  const deleteCard = async (id) => {
+    await axios.delete(`http://localhost:8080/api/flashcards/${id}`);
+    setCards(cards.filter((c) => c.id !== id));
+  };
+
+  const startEdit = (card) => {
+    setForm({ question: card.question, answer: card.answer });
+    setEditingId(card.id);
+  };
+
+  const updateCard = async () => {
+    const res = await axios.put(
+      `http://localhost:8080/api/flashcards/${editingId}`,
+      form
+    );
+    setCards(cards.map((c) => (c.id === editingId ? res.data : c)));
+    setEditingId(null);
+    setForm({ question: "", answer: "" });
+  };
+
+  // ================= LOGIN =================
+
+  const handleLogin = async () => {
+  try {
+    const res = await fetch("http://localhost:8080/api/users");
+    const users = await res.json();
+
+    const foundUser = users.find(
+      (u) =>
+        u.username === loginUsername &&
+        u.password === loginPassword
+    );
+
+    if (foundUser) {
+      setIsLoggedIn(true);
+      setIsAdmin(foundUser.role.toLowerCase() === "admin");
+    } else {
+      alert("Invalid credentials");
     }
+  } catch (error) {
+    console.error(error);
+    alert("Server error");
+  }
+};
+  // ================= UI =================
 
-    setDirection("next");
-    setAnimating(true);
+  if (cards.length === 0) return <h2>Loading...</h2>;
 
-    setTimeout(() => {
-      setIndex((prev) => (prev + 1) % cards.length);
-      setAnimating(false);
-    }, 250);
-  };
-
-  const prevCard = () => {
-    if (animating) return;
-
-    setDirection("prev");
-    setAnimating(true);
-
-    setTimeout(() => {
-      setIndex((prev) => (prev - 1 + cards.length) % cards.length);
-      setAnimating(false);
-    }, 250);
-  };
-
-  const goToFirst = () => {
-    if (animating) return;
-
-    setDirection("prev");
-    setAnimating(true);
-
-    setTimeout(() => {
-      setIndex(0);
-      setAnimating(false);
-    }, 300);
-  };
-
-  const goToLast = () => {
-    if (animating) return;
-
-    setDirection("next");
-    setAnimating(true);
-
-    setTimeout(() => {
-      setIndex(cards.length - 1);
-      setAnimating(false);
-    }, 300);
-  };
-
-  // ✅ KEYBOARD EFFECT (AFTER FUNCTIONS)
-  useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "ArrowRight") nextCard();
-      if (e.key === "ArrowLeft") prevCard();
-    };
-
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [index, cards]); // simplified dependency
-
-  // ✅ LOADING CHECK
-  if (cards.length === 0) return <p>Loading...</p>;
-
-
-if (completed) {
   return (
-    <div className="app">
-      <div className="complete-screen">
-        <h1>🎉 Congratulations!</h1>
-        <p>You completed all flashcards 🚀</p>
+    <div>
+      {!isLoggedIn ? (
+  <div style={styles.loginContainer}>
+    <div style={styles.loginCard}>
+      <h2 style={styles.loginTitle}>Welcome Back 👋</h2>
 
-         <button onClick={() => {
-           setCompleted(false);
-           setIndex(0);
-           setDirection("next");
-          setAnimating(false);
-        }}>
-            Restart 🔄
-          </button>
-      </div>
+      <input
+        style={styles.input}
+        placeholder="Username"
+        value={loginUsername}
+        onChange={(e) => setLoginUsername(e.target.value)}
+      />
+
+      <input
+        style={styles.input}
+        type="password"
+        placeholder="Password"
+        value={loginPassword}
+        onChange={(e) => setLoginPassword(e.target.value)}
+      />
+
+      <button style={styles.loginButton} onClick={handleLogin}>
+        Login 🚀
+      </button>
     </div>
+  </div>
+) : (
+        <>
+          {/* ================= ADMIN PANEL ================= */}
+          {isAdmin && (
+            <div>
+              <h2>Admin Panel</h2>
+
+              {/* ADD USER */}
+              <h3>Add User</h3>
+
+              <input
+                placeholder="Username"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+
+              <input
+                placeholder="Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+
+              <button onClick={addUser}>Add User</button>
+
+              {/* USER LIST */}
+              <h3>All Users</h3>
+              {users.map((u) => (
+                <div key={u.id}>
+                  {u.username} ({u.role})
+                  <button onClick={() => deleteUser(u.id)}>
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ================= FLASHCARDS ================= */}
+          <FlashcardApp
+            isAdmin={isAdmin}
+            startEdit={startEdit}
+            deleteCard={deleteCard}
+          />
+          
+        </>
+        
+      )}
+    </div>
+         
+
   );
 }
 
-return (
-  <div className="app">
-
-    {completed && (
-      <Confetti
-        width={window.innerWidth}
-        height={window.innerHeight}
-      />
-    )}
-
-    <Particles
-      className="particles"
-      style={{
-        position: "fixed",
-        zIndex: 0,
-        pointerEvents: "none"
-      }}
-      options={{
-        particles: {
-          number: { value: 60 },
-          size: { value: 3 },
-          move: { speed: 0.5 },
-          opacity: { value: 0.2 },
-          links: {
-            enable: true,
-            color: "#ffffff",
-            opacity: 0.2
-          }
-        }
-      }}
-    />
-
-    <div className="top-section">
-      <h1>Flashcards</h1>
-
-      <div className="progress-bar">
-        <div
-          className="progress-fill"
-          style={{
-            width: cards.length
-              ? `${((index + 1) / cards.length) * 100}%`
-              : "0%"
-          }}
-        ></div>
-      </div>
-    </div>
-
-    <div className="card-container">
-
-      {/* ✅ FIX: Prevent crash when data not loaded */}
-      {cards.length > 0 && (
-        <>
-          <div className={`card-wrapper ${direction} ${animating ? "animate" : ""}`}>
-            <Flashcard
-              key={cards[index]?.id}
-              question={cards[index]?.question}
-              answer={cards[index]?.answer}
-              direction={direction}
-              onRate={nextCard}
-            />
-          </div>
-
-          <div className="buttons">
-            <button onClick={goToFirst} disabled={index === 0}>⏮ First</button>
-
-            <button onClick={prevCard} disabled={index === 0}>← Prev</button>
-
-            <button
-              onClick={() => {
-                if (index === cards.length - 1) {
-                  setCompleted(true);
-                } else {
-                  nextCard();
-                }
-              }}
-            >
-              {index === cards.length - 1 ? "Complete ✅" : "Next →"}
-            </button>
-
-            <button
-              onClick={goToLast}
-              disabled={index === cards.length - 1}
-            >
-              Last ⏭
-            </button>
-          </div>
-        </>
-      )}
-
-      {/* ✅ Optional loading state */}
-      {cards.length === 0 && (
-        <p style={{ color: "white" }}>Loading flashcards...</p>
-      )}
-
-    </div>
-
-  </div>
-);
-}
+const styles = {
+  loginContainer: {
+    height: "100vh",
+    background: "linear-gradient(135deg, #4b2cbf, #7a1fd1)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginCard: {
+    background: "rgba(255,255,255,0.15)",
+    padding: "40px",
+    borderRadius: "15px",
+    backdropFilter: "blur(10px)",
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+    width: "300px",
+    textAlign: "center",
+  },
+  loginTitle: {
+    color: "white",
+    marginBottom: "10px",
+  },
+  input: {
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+    outline: "none",
+  },
+  loginButton: {
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+    background: "black",
+    color: "white",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+};
 
 export default App;

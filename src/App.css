@@ -10,7 +10,7 @@ body {
   justify-content: center;
   height: 100vh;
 
-  background: linear-gradient(135deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
+  background: #330072;
   background-size: 300% 300%;
   animation: gradientMove 10s ease infinite;
 
@@ -189,3 +189,18 @@ button {
   position: relative;
   z-index: 2;
 }
+.progress-bar {
+  width: 60%;
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  margin: 10px auto 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #00e5ff;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+

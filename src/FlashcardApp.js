@@ -19,7 +19,7 @@ function FlashcardApp({ isAdmin }) {
   // ✅ FETCH CARDS
   const fetchCards = async () => {
     try {
-      const res = await fetch("https://flashcard-backend-4.onrender.com")
+      const res = await fetch("https://flashcard-backend-4.onrender.com/api/flashcards")
       const data = await res.json();
       setCards(data);
     } catch (error) {
@@ -33,7 +33,7 @@ function FlashcardApp({ isAdmin }) {
   const addCard = async () => {
     if (!newQuestion || !newAnswer) return;
 
-    await fetch("https://flashcard-backend-4.onrender.com", {
+    await fetch("https://flashcard-backend-4.onrender.com/api/flashcards", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -49,7 +49,7 @@ function FlashcardApp({ isAdmin }) {
 
   // ✅ DELETE CARD
   const handleDelete = async (id) => {
-    await fetch(`https://flashcard-backend-4.onrender.com${id}`, {
+    await fetch(`https://flashcard-backend-4.onrender.com/api/flashcards/${id}`, {
       method: "DELETE",
     });
     fetchCards();
@@ -57,7 +57,7 @@ function FlashcardApp({ isAdmin }) {
 
   // ✅ UPDATE CARD
   const updateCard = async () => {
-    await fetch(`https://flashcard-backend-4.onrender.com${editingCard.id}`, {
+    await fetch(`https://flashcard-backend-4.onrender.com/api/flashcards/${editingCard.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -9,22 +9,19 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // 👉 Separate user form state (IMPORTANT FIX)
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [role, setRole] = useState("user");
 
   const [users, setUsers] = useState([]);
 
-  // Flashcards
-  const [cards, setCards] = useState([]);
-  const [form, setForm] = useState({ question: "", answer: "" });
-  const [editingId, setEditingId] = useState(null);
+  // ❌ REMOVED unused states:
+  // cards, form, editingId, addCard, updateCard
 
   // ================= USERS =================
 
   const fetchUsers = async () => {
-    const res = await fetch("https://flashcard-backend-4.onrender.com/api/flashcards")
+    const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
     const data = await res.json();
     setUsers(data);
   };
@@ -55,107 +52,64 @@ function App() {
     fetchUsers();
   };
 
-  // ================= FLASHCARDS =================
-
-  useEffect(() => {
-    axios
-      .get("https://flashcard-backend-4.onrender.com/api/flashcards")
-      .then((res) => setCards(res.data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  const addCard = async () => {
-    const res = await axios.post(
-      "https://flashcard-backend-4.onrender.com/api/flashcards",
-      form
-    );
-    setCards([...cards, res.data]);
-    setForm({ question: "", answer: "" });
-  };
-
-  const deleteCard = async (id) => {
-    await axios.delete(`https://flashcard-backend-4.onrender.com/api/flashcards${id}`)
-    setCards(cards.filter((c) => c.id !== id));
-  };
-
-  const startEdit = (card) => {
-    setForm({ question: card.question, answer: card.answer });
-    setEditingId(card.id);
-  };
-
-  const updateCard = async () => {
-    const res = await axios.put(
-      `https://flashcard-backend-4.onrender.com/api/flashcards${editingId}`,
-      form
-    );
-    setCards(cards.map((c) => (c.id === editingId ? res.data : c)));
-    setEditingId(null);
-    setForm({ question: "", answer: "" });
-  };
-
   // ================= LOGIN =================
 
   const handleLogin = async () => {
-  try {
-    const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
-    const users = await res.json();
+    try {
+      const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
+      const users = await res.json();
 
-    const foundUser = users.find(
-      (u) =>
-        u.username === loginUsername &&
-        u.password === loginPassword
-    );
+      const foundUser = users.find(
+        (u) =>
+          u.username === loginUsername &&
+          u.password === loginPassword
+      );
 
-    if (foundUser) {
-      setIsLoggedIn(true);
-      setIsAdmin(foundUser.role.toLowerCase() === "admin");
-    } else {
-      alert("Invalid credentials");
+      if (foundUser) {
+        setIsLoggedIn(true);
+        setIsAdmin(foundUser.role.toLowerCase() === "admin");
+      } else {
+        alert("Invalid credentials");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Server error");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Server error");
-  }
-};
-  // ================= UI =================
-
-  if (cards.length === 0) return <h2>Loading...</h2>;
+  };
 
   return (
     <div>
       {!isLoggedIn ? (
-  <div style={styles.loginContainer}>
-    <div style={styles.loginCard}>
-      <h2 style={styles.loginTitle}>Welcome Back 👋</h2>
+        <div style={styles.loginContainer}>
+          <div style={styles.loginCard}>
+            <h2 style={styles.loginTitle}>Welcome Back 👋</h2>
 
-      <input
-        style={styles.input}
-        placeholder="Username"
-        value={loginUsername}
-        onChange={(e) => setLoginUsername(e.target.value)}
-      />
+            <input
+              style={styles.input}
+              placeholder="Username"
+              value={loginUsername}
+              onChange={(e) => setLoginUsername(e.target.value)}
+            />
 
-      <input
-        style={styles.input}
-        type="password"
-        placeholder="Password"
-        value={loginPassword}
-        onChange={(e) => setLoginPassword(e.target.value)}
-      />
+            <input
+              style={styles.input}
+              type="password"
+              placeholder="Password"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
 
-      <button style={styles.loginButton} onClick={handleLogin}>
-        Login 🚀
-      </button>
-    </div>
-  </div>
-) : (
+            <button style={styles.loginButton} onClick={handleLogin}>
+              Login 🚀
+            </button>
+          </div>
+        </div>
+      ) : (
         <>
-          {/* ================= ADMIN PANEL ================= */}
           {isAdmin && (
             <div>
               <h2>Admin Panel</h2>
 
-              {/* ADD USER */}
               <h3>Add User</h3>
 
               <input
@@ -180,7 +134,6 @@ function App() {
 
               <button onClick={addUser}>Add User</button>
 
-              {/* USER LIST */}
               <h3>All Users</h3>
               {users.map((u) => (
                 <div key={u.id}>
@@ -193,19 +146,10 @@ function App() {
             </div>
           )}
 
-          {/* ================= FLASHCARDS ================= */}
-          <FlashcardApp
-            isAdmin={isAdmin}
-            startEdit={startEdit}
-            deleteCard={deleteCard}
-          />
-          
+          <FlashcardApp isAdmin={isAdmin} />
         </>
-        
       )}
     </div>
-         
-
   );
 }
 
@@ -230,13 +174,11 @@ const styles = {
   },
   loginTitle: {
     color: "white",
-    marginBottom: "10px",
   },
   input: {
     padding: "10px",
     borderRadius: "8px",
     border: "none",
-    outline: "none",
   },
   loginButton: {
     padding: "10px",
@@ -245,7 +187,6 @@ const styles = {
     background: "black",
     color: "white",
     cursor: "pointer",
-    fontWeight: "bold",
   },
 };
 

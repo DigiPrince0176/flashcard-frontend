@@ -22,13 +22,15 @@ const Flashcard = ({ question, answer, direction }) => {
           </div>
 
           <div
-              className="card-back"
-               style={{
-                  maxHeight: "500px",
-              overflowY: "auto",
-                 padding: "10px"
-                  }}
-          >
+  className="card-back"
+  style={{
+    maxHeight: "300px",
+    overflowY: "auto",
+    padding: "20px",
+    display: "flex",
+    alignItems: "flex-start"
+  }}
+>
 
            <p
             style={{

@@ -54,28 +54,34 @@ function App() {
 
   // ================= LOGIN =================
 
-  const handleLogin = async () => {
-    try {
-      const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
-      const users = await res.json();
+ const handleLogin = async () => {
+  try {
+    console.log("Login clicked");
 
-      const foundUser = users.find(
-        (u) =>
-          u.username === loginUsername &&
-          u.password === loginPassword
-      );
+    const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
+    const users = await res.json();
 
-      if (foundUser) {
-        setIsLoggedIn(true);
-        setIsAdmin(foundUser.role.toLowerCase() === "admin");
-      } else {
-        alert("Invalid credentials");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Server error");
+    console.log("Users:", users);
+
+    const foundUser = users.find(
+      (u) =>
+        u.username === loginUsername &&
+        u.password === loginPassword
+    );
+
+    console.log("Found user:", foundUser);
+
+    if (foundUser) {
+      setIsLoggedIn(true);
+      setIsAdmin(foundUser.role.toLowerCase() === "admin");
+    } else {
+      alert("Invalid credentials");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Server error");
+  }
+};
 
   return (
     <div>

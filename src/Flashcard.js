@@ -21,8 +21,25 @@ const Flashcard = ({ question, answer, direction }) => {
             </button>
           </div>
 
-          <div className="card-back">
-            <p>{answer}</p>
+          <div
+              className="card-back"
+               style={{
+                  maxHeight: "300px",
+              overflowY: "auto",
+                 padding: "10px"
+                  }}
+          >
+            
+           <p
+            style={{
+              wordWrap: "break-word",
+             overflowWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              lineHeight: "1.6"
+             }}
+            >
+              {answer}
+             </p>
             <button onClick={() => setFlipped(false)}>
               Back
             </button>

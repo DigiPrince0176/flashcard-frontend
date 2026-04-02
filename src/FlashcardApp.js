@@ -275,6 +275,10 @@ const styles = {
     padding: "40px",
     borderRadius: "15px",
     textAlign: "center",
+    maxWidth: "600px",
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
+    whiteSpace: "pre-wrap",
   },
   button: {
     marginTop: "20px",

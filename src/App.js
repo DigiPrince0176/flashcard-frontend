@@ -24,13 +24,13 @@ function App() {
   // ================= USERS =================
 
   const fetchUsers = async () => {
-    const res = await fetch("http://localhost:8080/api/users");
+    const res = await fetch("https://flashcard-backend-4.onrender.com/api/flashcards")
     const data = await res.json();
     setUsers(data);
   };
 
   const addUser = async () => {
-    await fetch("http://localhost:8080/api/users", {
+    await fetch("https://flashcard-backend-4.onrender.com/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -49,7 +49,7 @@ function App() {
   };
 
   const deleteUser = async (id) => {
-    await fetch(`http://localhost:8080/api/users/${id}`, {
+    await fetch(`https://flashcard-backend-4.onrender.com/api/users/${id}`, {
       method: "DELETE"
     });
     fetchUsers();
@@ -59,14 +59,14 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/flashcards")
+      .get("https://flashcard-backend-4.onrender.com/api/flashcards")
       .then((res) => setCards(res.data))
       .catch((err) => console.error(err));
   }, []);
 
   const addCard = async () => {
     const res = await axios.post(
-      "http://localhost:8080/api/flashcards",
+      "https://flashcard-backend-4.onrender.com/api/flashcards",
       form
     );
     setCards([...cards, res.data]);
@@ -74,7 +74,7 @@ function App() {
   };
 
   const deleteCard = async (id) => {
-    await axios.delete(`http://localhost:8080/api/flashcards/${id}`);
+    await axios.delete(`https://flashcard-backend-4.onrender.com/api/flashcards${id}`)
     setCards(cards.filter((c) => c.id !== id));
   };
 
@@ -85,7 +85,7 @@ function App() {
 
   const updateCard = async () => {
     const res = await axios.put(
-      `http://localhost:8080/api/flashcards/${editingId}`,
+      `https://flashcard-backend-4.onrender.com/api/flashcards${editingId}`,
       form
     );
     setCards(cards.map((c) => (c.id === editingId ? res.data : c)));
@@ -97,7 +97,7 @@ function App() {
 
   const handleLogin = async () => {
   try {
-    const res = await fetch("http://localhost:8080/api/users");
+    const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
     const users = await res.json();
 
     const foundUser = users.find(

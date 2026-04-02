@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FlashcardApp from "./FlashcardApp";
 import "./App.css";
+import logo from "./logo.png";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,6 +89,7 @@ function App() {
       {!isLoggedIn ? (
         <div style={styles.loginContainer}>
           <div style={styles.loginCard}>
+            <img src={logo} alt="logo" style={styles.logo} />
             <h2 style={styles.loginTitle}>Welcome Back 👋</h2>
 
             <input
@@ -162,7 +164,7 @@ function App() {
 const styles = {
   loginContainer: {
     height: "100vh",
-    background: "linear-gradient(135deg, #4b2cbf, #7a1fd1)",
+    background: "#38499D",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -194,6 +196,13 @@ const styles = {
     color: "white",
     cursor: "pointer",
   },
+  logo: {
+  width: "120px",
+  margin: "0 auto",
+  marginBottom: "10px",
+},
+
 };
+
 
 export default App;

@@ -24,7 +24,7 @@ const Flashcard = ({ question, answer, direction }) => {
           <div
   className="card-back"
   style={{
-    maxHeight: "600px",
+    maxHeight: "550px",
     overflowY: "auto",
     padding: "20px",
     display: "flex",

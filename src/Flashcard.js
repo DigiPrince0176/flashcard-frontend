@@ -27,8 +27,7 @@ const Flashcard = ({ question, answer, direction }) => {
     maxHeight: "500px",
     overflowY: "auto",
     padding: "20px",
-    display: "flex",
-    alignItems: "flex-start"
+    display: "block",
   }}
 >
 
@@ -37,7 +36,8 @@ const Flashcard = ({ question, answer, direction }) => {
               wordWrap: "break-word",
              overflowWrap: "break-word",
               whiteSpace: "pre-wrap",
-              lineHeight: "1.6"
+              lineHeight: "1.6",
+              marginTop: "10px"
              }}
             >
               {answer}

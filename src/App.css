@@ -205,3 +205,9 @@ button {
   transition: width 0.3s ease;
 }
 
+.flashcard {
+  padding: 25px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-top: 30px !important;
+}

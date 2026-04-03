@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Flashcard from "./Flashcard";
 import "./App.css";
 import Particles from "react-tsparticles";
 import Confetti from "react-confetti";
 import logo from "./logo.png";
 
+
 function FlashcardApp({ isAdmin }) {
   const [cards, setCards] = useState([]);
+  const ref = useRef(null);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState("next");
   const [animating, setAnimating] = useState(false);
@@ -15,6 +17,7 @@ function FlashcardApp({ isAdmin }) {
   const [newQuestion, setNewQuestion] = useState("");
   const [newAnswer, setNewAnswer] = useState("");
   const [loading, setLoading] = useState(true);
+  
 
   // ✅ FETCH CARDS
   const fetchCards = async () => {
@@ -28,6 +31,14 @@ function FlashcardApp({ isAdmin }) {
       setLoading(false);
     }
   };
+
+
+useEffect(() => {
+  if (ref.current) {
+    ref.current.scrollTop = 0;
+  }
+}, [index]);
+
 
   // ✅ ADD CARD
   const addCard = async () => {
@@ -195,7 +206,7 @@ function FlashcardApp({ isAdmin }) {
   </div>
 )}
 
-      <div className="card-container">
+      <div className="card-container" ref={ref}>
         <Flashcard
           key={cards[index]?.id}
           question={cards[index]?.question}
@@ -241,6 +252,9 @@ function FlashcardApp({ isAdmin }) {
         </div>
       </div>
     </div>
+
+        
+
   );
 }
 

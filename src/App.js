@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import FlashcardApp from "./FlashcardApp";
 import "./App.css";
 import logo from "./logo.png";
@@ -16,11 +15,7 @@ function App() {
 
   const [users, setUsers] = useState([]);
 
-  // ❌ REMOVED unused states:
-  // cards, form, editingId, addCard, updateCard
-
   // ================= USERS =================
-
   const fetchUsers = async () => {
     const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
     const data = await res.json();
@@ -30,9 +25,7 @@ function App() {
   const addUser = async () => {
     await fetch("https://flashcard-backend-4.onrender.com/api/users", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: newUsername,
         password: newPassword,
@@ -54,35 +47,22 @@ function App() {
   };
 
   // ================= LOGIN =================
-
- const handleLogin = async () => {
-  try {
-    console.log("Login clicked");
-
+  const handleLogin = async () => {
     const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
     const users = await res.json();
 
-    console.log("Users:", users);
-
     const foundUser = users.find(
-      (u) =>
-        u.username === loginUsername &&
-        u.password === loginPassword
+      (u) => u.username === loginUsername && u.password === loginPassword
     );
-
-    console.log("Found user:", foundUser);
 
     if (foundUser) {
       setIsLoggedIn(true);
       setIsAdmin(foundUser.role.toLowerCase() === "admin");
+      fetchUsers();
     } else {
       alert("Invalid credentials");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Server error");
-  }
-};
+  };
 
   return (
     <div>
@@ -113,55 +93,178 @@ function App() {
           </div>
         </div>
       ) : (
-        <>
+        <div style={styles.mainContainer}>
+          
           {isAdmin && (
-            <div>
-              <h2>Admin Panel</h2>
+  <div style={styles.header}>
+    <img src={logo} alt="logo" style={styles.topLogo} />
+    <h1 style={styles.mainTitle}>Admin Panel</h1>
+  </div>
+)}
 
-              <h3>Add User</h3>
+          {/* ===== TOP CARDS (SIDE BY SIDE) ===== */}
+          <div style={styles.topSection}>
 
-              <input
-                placeholder="Username"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-              />
+            {/* ADD USER */}
+            {isAdmin && (
+              <div style={styles.card}>
+                <h3 style={styles.cardTitle}>Add User</h3>
 
-              <input
-                placeholder="Password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
+                <input
+                  style={styles.input}
+                  placeholder="Username"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                />
 
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
+                <input
+                  style={styles.input}
+                  placeholder="Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
 
-              <button onClick={addUser}>Add User</button>
+                <select
+                  style={styles.select}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
 
-              <h3>All Users</h3>
-              {users.map((u) => (
-                <div key={u.id}>
-                  {u.username} ({u.role})
-                  <button onClick={() => deleteUser(u.id)}>
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+                <button style={styles.addButton} onClick={addUser}>
+                  + Add User
+                </button>
+              </div>
+            )}
 
-          <FlashcardApp isAdmin={isAdmin} />
-        </>
+            {/* USERS LIST */}
+            {isAdmin && (
+              <div style={styles.card}>
+                <h3 style={styles.cardTitle}>All Users</h3>
+
+                {users.map((u) => (
+                  <div key={u.id} style={styles.userItem}>
+                    {u.username} ({u.role})
+                    <button
+                      style={styles.deleteBtn}
+                      onClick={() => deleteUser(u.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* ===== FLASHCARDS SECTION ===== */}
+          <div style={styles.flashcardSection}>
+  <FlashcardApp isAdmin={isAdmin} />
+</div>
+
+        </div>
       )}
     </div>
   );
 }
 
+/* ================= STYLES ================= */
+
 const styles = {
+  mainContainer: {
+    background: "#38499D",
+    minHeight: "100vh",
+    padding: "30px 20px",
+  },
+
+  header: {
+    textAlign: "center",
+    marginBottom: "30px",
+  },
+
+  topLogo: {
+    width: "500px",
+    marginBottom: "10px",
+  },
+
+  mainTitle: {
+    color: "white",
+    fontSize: "28px",
+  },
+
+  topSection: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "40px",
+    flexWrap: "wrap",
+    marginBottom: "40px",
+  },
+
+  card: {
+    background: "rgba(255,255,255,0.15)",
+    padding: "25px",
+    borderRadius: "15px",
+    backdropFilter: "blur(10px)",
+    width: "320px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+
+  cardTitle: {
+    color: "white",
+    textAlign: "center",
+  },
+
+  input: {
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+  },
+
+  select: {
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+  },
+
+  addButton: {
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+    background: "#00c2ff",
+    color: "black",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+
+  userItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: "rgba(255,255,255,0.1)",
+    padding: "8px",
+    borderRadius: "8px",
+    marginBottom: "8px",
+    color: "white",
+  },
+
+  deleteBtn: {
+    background: "#ff3b3b",
+    color: "white",
+    border: "none",
+    padding: "5px 10px",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+
+  flashcardSection: {
+    marginTop: "20px",
+  },
+
+  /* LOGIN */
   loginContainer: {
     height: "100vh",
     background: "#38499D",
@@ -169,6 +272,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
+
   loginCard: {
     background: "rgba(255,255,255,0.15)",
     padding: "40px",
@@ -180,14 +284,11 @@ const styles = {
     width: "300px",
     textAlign: "center",
   },
+
   loginTitle: {
     color: "white",
   },
-  input: {
-    padding: "10px",
-    borderRadius: "8px",
-    border: "none",
-  },
+
   loginButton: {
     padding: "10px",
     borderRadius: "8px",
@@ -196,13 +297,16 @@ const styles = {
     color: "white",
     cursor: "pointer",
   },
-  logo: {
-  width: "120px",
-  margin: "0 auto",
-  marginBottom: "10px",
+
+logo: {
+  width: "100%",
+  maxwidth:"220px", /* controls size */
+  height:"auto",  /* keeps ratio */
+  display: "block",
+  margin:"0 auto 15px",
+  objectfit: "contain",
 },
 
 };
-
 
 export default App;

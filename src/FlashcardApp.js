@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import Flashcard from "./Flashcard";
 import "./App.css";
@@ -162,7 +163,7 @@ useEffect(() => {
       />
 
       <div style={styles.header}>
-  <img src={logo} alt="logo" style={styles.logo} />
+  {!isAdmin && <img src={logo} alt="logo" />}
   <h1>Flashcards</h1>
 </div>
 
@@ -213,25 +214,35 @@ useEffect(() => {
           answer={cards[index]?.answer}
         />
 
-        {isAdmin && (
-          <div style={{ marginTop: "15px" }}>
-            <button
-              onClick={() => {
-                setEditingCard(cards[index]);
-                setNewQuestion(cards[index].question);
-                setNewAnswer(cards[index].answer);
-              }}
-            >
-              Edit
-            </button>
+       {isAdmin && (
+  <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
+    
+    <button
+      style={styles.editBtn}
+      onClick={() => {
+        setEditingCard(cards[index]);
+        setNewQuestion(cards[index].question);
+        setNewAnswer(cards[index].answer);
+      }}
+    >
+      ✏️ Edit
+    </button>
 
-            {editingCard && <button onClick={updateCard}>Update</button>}
+    {editingCard && (
+      <button style={styles.updateBtn} onClick={updateCard}>
+        🔄 Update
+      </button>
+    )}
 
-            <button onClick={() => handleDelete(cards[index].id)}>
-              Delete
-            </button>
-          </div>
-        )}
+    <button
+      style={styles.deleteBtn}
+      onClick={() => handleDelete(cards[index].id)}
+    >
+      🗑 Delete
+    </button>
+
+  </div>
+)}
 
         <div className="buttons">
           <button onClick={goToFirst} disabled={index === 0}>
@@ -355,6 +366,38 @@ logo: {
   height:"200px",
   objectFit: "contain",
 },
+editBtn: {
+  background: "#00c2ff",
+  color: "black",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "bold",
+},
+
+updateBtn: {
+  background: "#4CAF50",
+  color: "white",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "bold",
+},
+
+deleteBtn: {
+  background: "#ff3b3b",
+  color: "white",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "bold",
+},
+
+
+
 };
 
 

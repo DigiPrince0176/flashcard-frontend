@@ -31,17 +31,15 @@ const Flashcard = ({ question, answer, direction }) => {
   }}
 >
 
-           <p
-            style={{
-              wordWrap: "break-word",
-             overflowWrap: "break-word",
-              whiteSpace: "pre-wrap",
-              lineHeight: "1.6",
-              marginTop: "10px"
-             }}
-            >
-              {answer}
-             </p>
+        <div
+              style={{
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
+                lineHeight: "1.6",
+                marginTop: "10px"
+                }}
+  dangerouslySetInnerHTML={{ __html: answer || "No content available" }}
+/>
             <button onClick={() => setFlipped(false)}>
               Back
             </button>

@@ -32,13 +32,15 @@ const Flashcard = ({ question, answer, direction }) => {
 >
 
         <div
-              style={{
-                wordWrap: "break-word",
+            style={{
+                 wordWrap: "break-word",
                 overflowWrap: "break-word",
-                lineHeight: "1.6",
-                marginTop: "10px"
-                }}
-  dangerouslySetInnerHTML={{ __html: answer || "No content available" }}
+                 lineHeight: "1.6",
+                  marginTop: "10px",
+                 fontSize: "22px",   // 👈 increase this
+                 color: "white"      // 👈 optional (for visibility)
+              }}
+            dangerouslySetInnerHTML={{ __html: answer || "" }}
 />
             <button onClick={() => setFlipped(false)}>
               Back

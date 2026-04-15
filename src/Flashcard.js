@@ -60,7 +60,6 @@ const Flashcard = ({ question, answer, direction }) => {
                 >
                 Back
               </button>
-                </div>
         </div>
       </div>
     </div>

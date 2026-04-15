@@ -396,6 +396,13 @@ deleteBtn: {
   fontWeight: "bold",
 },
 
+buttons {
+display: "flex",
+  justifyContent: "center",
+  gap: "20px",
+  marginTop: "20px",
+  paddingBottom: "60px",/* 👈 creates breathing space below */
+},
 
 
 };

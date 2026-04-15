@@ -33,18 +33,19 @@ const Flashcard = ({ question, answer, direction }) => {
             flexDirection: "column",   // 👈 important
           }}
         >
-          <div
-            style={{
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              lineHeight: "1.6",
+         <div
+     style={{
+           wordWrap: "break-word",
+               overflowWrap: "break-word",
+             lineHeight: "1.6",
               marginTop: "10px",
               fontSize: "22px",
               color: "white",
-              flexGrow: 1, // pushes button down
-            }}
-            dangerouslySetInnerHTML={{ __html: answer || "" }}
-          />
+              flexGrow: 1,
+              textAlign: "left",   // 👈 ADD THIS
+             }}
+           dangerouslySetInnerHTML={{ __html: answer || "" }}
+           />
 
           <button
             onClick={() => setFlipped(false)}

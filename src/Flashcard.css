@@ -53,11 +53,6 @@
 
 /* TEXT */
 .card-front p,
-.card-back li,
-.card-back div,
-.card-back span {
-  text-align: left;
-}
 .card-back p {
   text-align: left !important;
   font-size: 24px;

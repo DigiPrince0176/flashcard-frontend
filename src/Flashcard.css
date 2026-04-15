@@ -54,6 +54,7 @@
 /* TEXT */
 .card-front p,
 .card-back p {
+  text-align: left !important;
   font-size: 24px;
   margin-bottom: 20px;
 }

@@ -31,22 +31,36 @@ const Flashcard = ({ question, answer, direction }) => {
   }}
 >
 
-        <div
+          <div
+              style={{
+                   display: "flex",
+                   flexDirection: "column",
+                   height: "100%",   // important
+                  }}
+              >
+          <div
             style={{
                  wordWrap: "break-word",
-                overflowWrap: "break-word",
+                 overflowWrap: "break-word",
                  lineHeight: "1.6",
-                  marginTop: "10px",
-                 fontSize: "22px",   // 👈 increase this
-                 color: "white"      // 👈 optional (for visibility)
-              }}
-            dangerouslySetInnerHTML={{ __html: answer || "" }}
-/>
-            <button onClick={() => setFlipped(false)}>
-              Back
-            </button>
-          </div>
+                 marginTop: "10px",
+                 fontSize: "22px",
+                 color: "white",
+                flexGrow: 1   // 👈 pushes button down
+                }}
+         dangerouslySetInnerHTML={{ __html: answer || "" }}
+          />
 
+          <button
+             onClick={() => setFlipped(false)}
+               style={{
+                        marginTop: "auto",   // 👈 key line
+                       alignSelf: "center", // optional (center button)
+                    }}
+                >
+                Back
+              </button>
+                </div>
         </div>
       </div>
     </div>

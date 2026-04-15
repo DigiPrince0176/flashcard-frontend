@@ -397,13 +397,13 @@ deleteBtn: {
 },
 
 buttons: {
-display: "flex",
+  display: "flex",
   justifyContent: "center",
   gap: "20px",
-  marginTop: "20px",
-  paddingBottom: "60px",/* 👈 creates breathing space below */
-},
+  marginTop: "30px",     /* space from card */
+  marginBottom: "40px",  /* 👈 pushes buttons UP */
 
+},
 
 };
 

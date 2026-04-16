@@ -212,3 +212,30 @@ button {
   box-sizing: border-box;
   padding-top: 30px !important;
 }
+
+.number-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.num {
+  padding: 6px 10px;
+  background: #dcdcdc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.num:hover {
+  background: #bbb;
+}
+
+.num.active {
+  background: #00d4ff;
+  color: black;
+  font-weight: bold;
+}

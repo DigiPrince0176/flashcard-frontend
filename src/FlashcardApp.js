@@ -143,11 +143,12 @@ const visibleCards = cards.slice(start, end);
     return (
       <div style={styles.container}>
         <Confetti />
-        <h1 style={styles.title}>Flashcards</h1>
+       
 
         <div style={styles.progressBar}>
           <div style={{ ...styles.progress, width: "100%" }}></div>
         </div>
+       <h1 style={styles.title}>Flashcards</h1>
 
         <div style={styles.card}>
           <h2 style={{ color: "white" }}>🎉 Completed!</h2>

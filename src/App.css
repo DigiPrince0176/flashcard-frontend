@@ -212,20 +212,3 @@ button {
   box-sizing: border-box;
   padding-top: 30px !important;
 }
-.dot {
-  width: 10px;
-  height: 10px;
-  background-color: #bbb;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.dot.active {
-  background-color: #00d4ff;
-  transform: scale(1.4);
-}
-
-.dot.completed {
-  background-color: #4caf50;
-}

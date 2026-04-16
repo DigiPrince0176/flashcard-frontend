@@ -252,50 +252,29 @@ const visibleCards = cards.slice(start, end);
   </div>
 )}
 
-   <div className="number-nav">
-               {cards.map((_, i) => (
-                   <span
-                     key={i}
-                         className={`num ${i === index ? "active" : ""}`}
-                     onClick={() => setIndex(i)}
-                    >
-              {i + 1}
-            </span>
-         ))}
-  </div>
-        <div className="number-nav">
-  
-  {/* PREV GROUP */}
-  <button
-    onClick={() => setIndex(Math.max(start - groupSize, 0))}
-    disabled={start === 0}
-  >
-    ← Prev
-  </button>
+  <div className="number-nav">
+  {cards
+    .slice(
+      Math.floor(index / 5) * 5,
+      Math.floor(index / 5) * 5 + 5
+    )
+    .map((_, i) => {
+      const start = Math.floor(index / 5) * 5;
+      const actualIndex = start + i;
 
-  {/* NUMBERS */}
-  {visibleCards.map((_, i) => {
-    const actualIndex = start + i;
-    return (
-      <span
-        key={actualIndex}
-        className={`num ${actualIndex === index ? "active" : ""}`}
-        onClick={() => setIndex(actualIndex)}
-      >
-        {actualIndex + 1}
-      </span>
-    );
-  })}
-
-  {/* NEXT GROUP */}
-  <button
-    onClick={() => setIndex(start + groupSize)}
-    disabled={end >= cards.length}
-  >
-    Next →
-  </button>
-
+      return (
+        <span
+          key={actualIndex}
+          className={`num ${actualIndex === index ? "active" : ""}`}
+          onClick={() => setIndex(actualIndex)}
+        >
+          {actualIndex + 1}
+        </span>
+      );
+    })}
 </div>
+
+  
            
     
         <div className="buttons">

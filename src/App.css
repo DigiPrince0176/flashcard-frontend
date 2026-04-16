@@ -25,6 +25,12 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+.header {
+  display: flex;
+  align-items: center;   /* 🔥 THIS FIXES YOUR ISSUE */
+  justify-content: space-between;
+}
+
 /* TOP */
 .top-section {
   margin-top: 30px;

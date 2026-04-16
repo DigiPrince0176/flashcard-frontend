@@ -223,11 +223,13 @@ button {
 
 .num {
   padding: 6px 10px;
-  background: #dcdcdc;
+  background: #ffffff;   /* white background */
+  color: #000000;        /* black text */
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   transition: 0.2s;
+  border: 1px solid #ddd; /* optional subtle border */
 }
 
 .num:hover {

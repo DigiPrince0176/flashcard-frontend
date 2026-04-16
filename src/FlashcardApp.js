@@ -119,6 +119,13 @@ useEffect(() => {
     }, 250);
   };
 
+  const groupSize = 5;
+
+const start = Math.floor(index / groupSize) * groupSize;
+const end = Math.min(start + groupSize, cards.length);
+
+const visibleCards = cards.slice(start, end);
+
   const goToFirst = () => setIndex(0);
   const goToLast = () => setIndex(cards.length - 1);
 
@@ -256,6 +263,41 @@ useEffect(() => {
             </span>
          ))}
   </div>
+        <div className="number-nav">
+  
+  {/* PREV GROUP */}
+  <button
+    onClick={() => setIndex(Math.max(start - groupSize, 0))}
+    disabled={start === 0}
+  >
+    ← Prev
+  </button>
+
+  {/* NUMBERS */}
+  {visibleCards.map((_, i) => {
+    const actualIndex = start + i;
+    return (
+      <span
+        key={actualIndex}
+        className={`num ${actualIndex === index ? "active" : ""}`}
+        onClick={() => setIndex(actualIndex)}
+      >
+        {actualIndex + 1}
+      </span>
+    );
+  })}
+
+  {/* NEXT GROUP */}
+  <button
+    onClick={() => setIndex(start + groupSize)}
+    disabled={end >= cards.length}
+  >
+    Next →
+  </button>
+
+</div>
+           
+    
         <div className="buttons">
           <button onClick={goToFirst} disabled={index === 0}>
             ⏮ First

@@ -255,7 +255,7 @@ const visibleCards = cards.slice(start, end);
   <div className="number-nav">
   {cards
     .slice(
-     Math.floor(index / 10) * 10
+     Math.floor(index / 10) * 10,
      Math.floor(index / 10) * 10 + 10
     )
     .map((_, i) => {

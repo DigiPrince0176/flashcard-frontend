@@ -255,11 +255,11 @@ const visibleCards = cards.slice(start, end);
   <div className="number-nav">
   {cards
     .slice(
-      Math.floor(index / 5) * 5,
-      Math.floor(index / 5) * 5 + 5
+     Math.floor(index / 10) * 10
+     Math.floor(index / 10) * 10 + 10
     )
     .map((_, i) => {
-      const start = Math.floor(index / 5) * 5;
+      const start = Math.floor(index / 10) * 10;
       const actualIndex = start + i;
 
       return (

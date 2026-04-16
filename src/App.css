@@ -261,3 +261,7 @@ button {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.num:hover {
+  background: #f2f2f2;
+}

@@ -245,17 +245,6 @@ useEffect(() => {
   </div>
 )}
 
-  <div className="progress-container">
-  {cards.map((_, i) => (
-    <div
-      key={i}
-      className={`dot 
-        ${i === index ? "active" : ""} 
-        ${i < index ? "completed" : ""}`}
-      onClick={() => setIndex(i)}
-    />
-  ))}
-</div>
         <div className="buttons">
           <button onClick={goToFirst} disabled={index === 0}>
             ⏮ First

@@ -245,6 +245,17 @@ useEffect(() => {
   </div>
 )}
 
+   <div className="number-nav">
+               {cards.map((_, i) => (
+                   <span
+                     key={i}
+                         className={`num ${i === index ? "active" : ""}`}
+                     onClick={() => setIndex(i)}
+                    >
+              {i + 1}
+            </span>
+         ))}
+  </div>
         <div className="buttons">
           <button onClick={goToFirst} disabled={index === 0}>
             ⏮ First

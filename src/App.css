@@ -27,9 +27,25 @@ body {
 
 .header {
   display: flex;
-  align-items: center;   /* 🔥 THIS FIXES YOUR ISSUE */
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-end;
+  width: 100%;
+  padding: 10px 40px;
+}
+
+.header-left .logo {
+  height: 80px;
+}
+.header-center {
+  text-align: center;
+  color: white;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 150px;
 }
 
 /* TOP */
@@ -290,16 +306,17 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
   background: rgba(255,255,255,0.2);
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 20px;
+  color: white;
   cursor: pointer;
+  position: relative;
 }
 
 .user-avatar {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   background: #00e0ff;
   color: black;
   border-radius: 50%;
@@ -309,14 +326,16 @@ button {
   font-weight: bold;
 }
 
+
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 45px;
+  top: 40px;
   right: 0;
   background: white;
   color: black;
-  border-radius: 8px;
+  border-radius: 6px;
+  padding: 5px 0;
 }
 
 .user-container:hover .dropdown-menu {

@@ -172,7 +172,7 @@ const visibleCards = cards.slice(start, end);
       />
 
     <div style={styles.header}>
-        {!isAdmin && <img src={logo} alt="logo" />}
+        {!isAdmin && <img src={logo} alt="logo" style={{ height: "80px" }} />}
 
         <h1 className="flashcard-title">Flashcards</h1>
     </div>
@@ -391,16 +391,16 @@ primaryButton: {
 },
 header: {
   display: "flex",
+  justifyContent: "space-between",
   alignItems: "center",
-  justifyContent: "center",
-  gap: "15px",
+  padding: "0 40px",
 },
 
-logo: {
-  width: "500px",
-  height:"200px",
-  objectFit: "contain",
-},
+//logo: {
+  //width: "500px",
+ // height:"200px",
+// objectFit: "contain",
+//},
 editBtn: {
   background: "#00c2ff",
   color: "black",
@@ -439,11 +439,7 @@ buttons: {
   marginBottom: "40px",  /* 👈 pushes buttons UP */
 },
 
-  header: {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",   // 🔥 important
-}
+
 
 };
 

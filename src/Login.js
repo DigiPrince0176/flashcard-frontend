@@ -7,7 +7,7 @@ function Login({ setUser }) {
   
 
 const handleLogin = async () => {
-  console.log("LOGIN CLICKED"); // 👈 ADD THIS FIRST LINE // ✅ ADD THIS
+  console.log("LOGIN CLICKED");
 
   try {
     const res = await fetch(
@@ -18,22 +18,25 @@ const handleLogin = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
-          password: password,
+          username,
+          password,
         }),
       }
     );
 
-    console.log("RESPONSE STATUS:", res.status); // ✅ ADD
+    console.log("STATUS:", res.status);
+
     const data = await res.json();
-    console.log("LOGIN RESPONSE:", data); // ✅ ADD
+    console.log("LOGIN RESPONSE:", data);
 
     if (res.ok) {
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(data)); // ✅ IMPORTANT
       window.location.href = "/flashcards";
+    } else {
+      alert("Invalid credentials");
     }
   } catch (error) {
-    console.error("ERROR:", error); // ✅ ADD
+    console.error("LOGIN ERROR:", error);
   }
 };
   

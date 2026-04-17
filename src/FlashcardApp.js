@@ -185,7 +185,7 @@ const visibleCards = cards.slice(start, end);
         <h1 className="flashcard-title">Flashcards</h1>
          {user && (
     <div className="user-menu">
-      👤 {user.name}
+      👤 {user.username}
     </div>
   )}
     </div>

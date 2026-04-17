@@ -437,8 +437,13 @@ buttons: {
   gap: "20px",
   marginTop: "30px",     /* space from card */
   marginBottom: "40px",  /* 👈 pushes buttons UP */
-
 },
+
+  header: {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",   // 🔥 important
+}
 
 };
 

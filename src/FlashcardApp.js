@@ -175,19 +175,19 @@ function FlashcardApp({ isAdmin }) {
       />
 
       {/* HEADER */}
-    <div className="header">
-  <div className="header-left">
+  <div className="header">
+
+  {/* CENTER LOGO */}
+  <div className="header-center">
     {!isAdmin && (
       <img src={logo} alt="logo" className="logo" />
     )}
-  </div>
-
-  <div className="header-center">
     <h1>Flashcards</h1>
   </div>
 
-  <div className="header-right">
-    {user && (
+  {/* RIGHT USER */}
+  {user && (
+    <div className="user-container">
       <div className="user-info">
         <span className="user-avatar">
           {user.username.charAt(0).toUpperCase()}
@@ -199,8 +199,9 @@ function FlashcardApp({ isAdmin }) {
           <div onClick={logout}>Logout</div>
         </div>
       </div>
-    )}
-  </div>
+    </div>
+  )}
+
 </div>
 
       {/* PROGRESS */}

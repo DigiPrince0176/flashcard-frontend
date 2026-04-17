@@ -7,7 +7,7 @@ function Login({ setUser }) {
 
 const handleLogin = async () => {
   try {
-    const res = await fetch("https://flashcard-backend-4.onrender.com/api/login", {
+    const res = await fetch("https://flashcard-backend-4.onrender.com/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

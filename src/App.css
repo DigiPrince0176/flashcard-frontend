@@ -279,3 +279,46 @@ button {
   font-size: 28px;
   text-align: center;
 }
+
+.user-container {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  background: #00e0ff;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  color: black;
+  border-radius: 8px;
+}
+
+.user-container:hover .dropdown-menu {
+  display: block;
+}

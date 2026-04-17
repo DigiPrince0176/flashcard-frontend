@@ -29,6 +29,7 @@ body {
   display: flex;
   align-items: center;   /* 🔥 THIS FIXES YOUR ISSUE */
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 /* TOP */

@@ -172,7 +172,7 @@ const visibleCards = cards.slice(start, end);
       />
 
     <div style={styles.header}>
-        {!isAdmin && <img src={logo} alt="logo" style={{ height: "80px" }} />}
+        {!isAdmin && <img src={logo} alt="logo" style={{ height: "100px" }} />}
 
         <h1 className="flashcard-title">Flashcards</h1>
     </div>

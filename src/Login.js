@@ -5,18 +5,28 @@ function Login({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-  try {
-    const res = await axios.post(
-      "https://flashcard-backend-4.onrender.com/api/auth/login",
-      { username, password }
-    );
-    
+ const handleLogin = async () => {
+  const res = await fetch("https://your-backend-url/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  });
 
-    setUser(res.data); // 🔥 store full user object
-    setIsAdmin(user.role === "admin");
-  } catch {
-    alert("Invalid login");
+  const data = await res.json();
+
+  if (res.ok) {
+    // ✅ store real user from DB
+    localStorage.setItem("user", JSON.stringify(data));
+
+    // redirect
+    window.location.href = "/flashcards";
+  } else {
+    alert("Invalid credentials");
   }
 };
 

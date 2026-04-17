@@ -7,7 +7,7 @@ function Login({ setUser }) {
   
 
 const handleLogin = async () => {
-  console.log("LOGIN BUTTON CLICKED"); // ✅ ADD THIS
+  console.log("LOGIN CLICKED"); // 👈 ADD THIS FIRST LINE // ✅ ADD THIS
 
   try {
     const res = await fetch(

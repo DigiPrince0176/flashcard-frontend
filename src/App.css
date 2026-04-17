@@ -272,3 +272,8 @@ button {
 .num:hover {
   background: #f2f2f2;
 }
+
+.flashcard-title {
+  color: white;
+  margin: 0;
+}

@@ -171,11 +171,11 @@ const visibleCards = cards.slice(start, end);
         }}
       />
 
-      <div style={styles.header}>
-  {!isAdmin && <img src={logo} alt="logo" />}
-        <br />
-  <h1>Flashcards</h1>
-</div>
+    <div style={styles.header}>
+        {!isAdmin && <img src={logo} alt="logo" />}
+
+        <h1 className="flashcard-title">Flashcards</h1>
+    </div>
 
       <div className="progress-bar">
         <div

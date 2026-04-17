@@ -391,9 +391,9 @@ primaryButton: {
 },
 header: {
   display: "flex",
-  justifyContent: "space-between",
+  flexDirection: "column",   // 🔥 THIS IS THE KEY
   alignItems: "center",
-  padding: "0 40px",
+  gap: "10px",
 },
 
 //logo: {

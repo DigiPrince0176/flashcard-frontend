@@ -19,6 +19,7 @@ function FlashcardApp({ isAdmin }) {
   const [newAnswer, setNewAnswer] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [user, setUser] = useState(null);
 
 
   // ✅ FETCH CARDS
@@ -89,6 +90,13 @@ useEffect(() => {
   useEffect(() => {
     fetchCards();
   }, []);
+
+  useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
+}, []);
 
   const nextCard = () => {
     if (animating) return;

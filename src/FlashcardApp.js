@@ -175,30 +175,33 @@ function FlashcardApp({ isAdmin }) {
       />
 
       {/* HEADER */}
-      <div style={styles.header}>
-        {!isAdmin && (
-          <img src={logo} alt="logo" style={{ height: "100px" }} />
-        )}
+    <div className="header">
+  <div className="header-left">
+    {!isAdmin && (
+      <img src={logo} alt="logo" className="logo" />
+    )}
+  </div>
 
-        <h1 className="flashcard-title">Flashcards</h1>
+  <div className="header-center">
+    <h1>Flashcards</h1>
+  </div>
 
-        {/* 👤 USER */}
-        {user && (
-          <div className="user-container">
-            <div className="user-info">
-              <span className="user-avatar">
-                {user.username.charAt(0).toUpperCase()}
-              </span>
-              <span>{user.username}</span>
-              ▼
-            </div>
+  <div className="header-right">
+    {user && (
+      <div className="user-info">
+        <span className="user-avatar">
+          {user.username.charAt(0).toUpperCase()}
+        </span>
+        <span>{user.username}</span>
+        ▼
 
-            <div className="dropdown-menu">
-              <div onClick={logout}>Logout</div>
-            </div>
-          </div>
-        )}
+        <div className="dropdown-menu">
+          <div onClick={logout}>Logout</div>
+        </div>
       </div>
+    )}
+  </div>
+</div>
 
       {/* PROGRESS */}
       <div className="progress-bar">

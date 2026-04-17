@@ -1,11 +1,10 @@
-
+```jsx
 import React, { useEffect, useState, useRef } from "react";
 import Flashcard from "./Flashcard";
 import "./App.css";
 import Particles from "react-tsparticles";
 import Confetti from "react-confetti";
 import logo from "./logo.png";
-
 
 function FlashcardApp({ isAdmin }) {
   const [cards, setCards] = useState([]);
@@ -18,14 +17,20 @@ function FlashcardApp({ isAdmin }) {
   const [newQuestion, setNewQuestion] = useState("");
   const [newAnswer, setNewAnswer] = useState("");
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(null);
 
+  // ✅ LOGOUT
+  const logout = () => {
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
 
   // ✅ FETCH CARDS
   const fetchCards = async () => {
     try {
-      const res = await fetch("https://flashcard-backend-4.onrender.com/api/flashcards")
+      const res = await fetch(
+        "https://flashcard-backend-4.onrender.com/api/flashcards"
+      );
       const data = await res.json();
       setCards(data);
     } catch (error) {
@@ -35,68 +40,73 @@ function FlashcardApp({ isAdmin }) {
     }
   };
 
+  useEffect(() => {
+    fetchCards();
+  }, []);
 
-useEffect(() => {
-  if (ref.current) {
-    ref.current.scrollTop = 0;
-  }
-}, [index]);
+  // ✅ LOAD USER FROM LOCALSTORAGE
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = 0;
+    }
+  }, [index]);
 
   // ✅ ADD CARD
   const addCard = async () => {
     if (!newQuestion || !newAnswer) return;
 
-    await fetch("https://flashcard-backend-4.onrender.com/api/flashcards", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question: newQuestion,
-        answer: newAnswer,
-      }),
-    });
+    await fetch(
+      "https://flashcard-backend-4.onrender.com/api/flashcards",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: newQuestion,
+          answer: newAnswer,
+        }),
+      }
+    );
 
     setNewQuestion("");
     setNewAnswer("");
     fetchCards();
   };
 
-  // ✅ DELETE CARD
+  // ✅ DELETE
   const handleDelete = async (id) => {
-    await fetch(`https://flashcard-backend-4.onrender.com/api/flashcards/${id}`, {
-      method: "DELETE",
-    });
+    await fetch(
+      `https://flashcard-backend-4.onrender.com/api/flashcards/${id}`,
+      { method: "DELETE" }
+    );
     fetchCards();
   };
 
-  // ✅ UPDATE CARD
+  // ✅ UPDATE
   const updateCard = async () => {
-    await fetch(`https://flashcard-backend-4.onrender.com/api/flashcards/${editingCard.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question: newQuestion,
-        answer: newAnswer,
-      }),
-    });
+    await fetch(
+      `https://flashcard-backend-4.onrender.com/api/flashcards/${editingCard.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: newQuestion,
+          answer: newAnswer,
+        }),
+      }
+    );
 
     setEditingCard(null);
     setNewQuestion("");
     setNewAnswer("");
     fetchCards();
   };
-
-  // ✅ LOAD DATA
-  useEffect(() => {
-    fetchCards();
-  }, []);
-
-  useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    setUser(JSON.parse(storedUser));
-  }
-}, []);
 
   const nextCard = () => {
     if (animating) return;
@@ -106,9 +116,7 @@ useEffect(() => {
       return;
     }
 
-    setDirection("next");
     setAnimating(true);
-
     setTimeout(() => {
       setIndex((prev) => prev + 1);
       setAnimating(false);
@@ -118,26 +126,16 @@ useEffect(() => {
   const prevCard = () => {
     if (animating) return;
 
-    setDirection("prev");
     setAnimating(true);
-
     setTimeout(() => {
       setIndex((prev) => prev - 1);
       setAnimating(false);
     }, 250);
   };
 
-  const groupSize = 5;
-
-const start = Math.floor(index / groupSize) * groupSize;
-const end = Math.min(start + groupSize, cards.length);
-
-const visibleCards = cards.slice(start, end);
-
   const goToFirst = () => setIndex(0);
   const goToLast = () => setIndex(cards.length - 1);
 
-  // ✅ RESTART FUNCTION (FIXED)
   const restart = () => {
     setIndex(0);
     setCompleted(false);
@@ -146,17 +144,15 @@ const visibleCards = cards.slice(start, end);
   if (loading) return <h2>Loading...</h2>;
   if (cards.length === 0) return <h2>No flashcards found</h2>;
 
-  // ✅ COMPLETED SCREEN (FIXED)
+  // ✅ COMPLETED SCREEN
   if (completed) {
     return (
       <div style={styles.container}>
         <Confetti />
-       
-
         <div style={styles.progressBar}>
           <div style={{ ...styles.progress, width: "100%" }}></div>
         </div>
-       <h1 style={styles.title}>Flashcards</h1>
+        <h1 style={styles.title}>Flashcards</h1>
 
         <div style={styles.card}>
           <h2 style={{ color: "white" }}>🎉 Completed!</h2>
@@ -179,17 +175,33 @@ const visibleCards = cards.slice(start, end);
         }}
       />
 
-    <div style={styles.header}>
-        {!isAdmin && <img src={logo} alt="logo" style={{ height: "100px" }} />}
+      {/* HEADER */}
+      <div style={styles.header}>
+        {!isAdmin && (
+          <img src={logo} alt="logo" style={{ height: "100px" }} />
+        )}
 
         <h1 className="flashcard-title">Flashcards</h1>
-         {user && (
-    <div className="user-menu">
-      👤 {user.username}
-    </div>
-  )}
-    </div>
 
+        {/* 👤 USER */}
+        {user && (
+          <div className="user-container">
+            <div className="user-info">
+              <span className="user-avatar">
+                {user.username.charAt(0).toUpperCase()}
+              </span>
+              <span>{user.username}</span>
+              ▼
+            </div>
+
+            <div className="dropdown-menu">
+              <div onClick={logout}>Logout</div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* PROGRESS */}
       <div className="progress-bar">
         <div
           className="progress-fill"
@@ -199,37 +211,7 @@ const visibleCards = cards.slice(start, end);
         ></div>
       </div>
 
-      {/* ADMIN PANEL */}
-      {isAdmin && (
-  <div style={styles.adminContainer}>
-    <h2 style={styles.adminTitle}>Admin Panel</h2>
-
-    <div style={styles.adminCard}>
-      <h3>Add Flashcard</h3>
-
-      <div style={styles.row}>
-        <input
-          placeholder="Question"
-          value={newQuestion}
-          onChange={(e) => setNewQuestion(e.target.value)}
-          style={styles.input}
-        />
-
-        <input
-          placeholder="Answer"
-          value={newAnswer}
-          onChange={(e) => setNewAnswer(e.target.value)}
-          style={styles.input}
-        />
-
-        <button onClick={addCard} style={styles.primaryButton}>
-          + Add Card
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+      {/* CARD */}
       <div className="card-container" ref={ref}>
         <Flashcard
           key={cards[index]?.id}
@@ -237,61 +219,32 @@ const visibleCards = cards.slice(start, end);
           answer={cards[index]?.answer}
         />
 
-       {isAdmin && (
-  <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
-    
-    <button
-      style={styles.editBtn}
-      onClick={() => {
-        setEditingCard(cards[index]);
-        setNewQuestion(cards[index].question);
-        setNewAnswer(cards[index].answer);
-      }}
-    >
-      ✏️ Edit
-    </button>
+        {/* NUMBER NAV */}
+        <div className="number-nav">
+          {cards
+            .slice(
+              Math.floor(index / 10) * 10,
+              Math.floor(index / 10) * 10 + 10
+            )
+            .map((_, i) => {
+              const start = Math.floor(index / 10) * 10;
+              const actualIndex = start + i;
 
-    {editingCard && (
-      <button style={styles.updateBtn} onClick={updateCard}>
-        🔄 Update
-      </button>
-    )}
+              return (
+                <span
+                  key={actualIndex}
+                  className={`num ${
+                    actualIndex === index ? "active" : ""
+                  }`}
+                  onClick={() => setIndex(actualIndex)}
+                >
+                  {actualIndex + 1}
+                </span>
+              );
+            })}
+        </div>
 
-    <button
-      style={styles.deleteBtn}
-      onClick={() => handleDelete(cards[index].id)}
-    >
-      🗑 Delete
-    </button>
-
-  </div>
-)}
-
-  <div className="number-nav">
-  {cards
-    .slice(
-     Math.floor(index / 10) * 10,
-     Math.floor(index / 10) * 10 + 10
-    )
-    .map((_, i) => {
-      const start = Math.floor(index / 10) * 10;
-      const actualIndex = start + i;
-
-      return (
-        <span
-          key={actualIndex}
-          className={`num ${actualIndex === index ? "active" : ""}`}
-          onClick={() => setIndex(actualIndex)}
-        >
-          {actualIndex + 1}
-        </span>
-      );
-    })}
-</div>
-
-  
-           
-    
+        {/* BUTTONS */}
         <div className="buttons">
           <button onClick={goToFirst} disabled={index === 0}>
             ⏮ First
@@ -305,19 +258,18 @@ const visibleCards = cards.slice(start, end);
             {index === cards.length - 1 ? "Complete ✅" : "Next →"}
           </button>
 
-          <button onClick={goToLast} disabled={index === cards.length - 1}>
+          <button
+            onClick={goToLast}
+            disabled={index === cards.length - 1}
+          >
             Last ⏭
           </button>
         </div>
       </div>
     </div>
-
-        
-
   );
 }
 
-// ✅ STYLES (ADDED)
 const styles = {
   container: {
     height: "100vh",
@@ -327,10 +279,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    color: "white",
-    marginBottom: "10px",
-  },
+  title: { color: "white" },
   progressBar: {
     width: "60%",
     height: "6px",
@@ -341,76 +290,27 @@ const styles = {
   progress: {
     height: "100%",
     background: "#00e0ff",
-    borderRadius: "10px",
   },
   card: {
     background: "rgba(255,255,255,0.2)",
     padding: "40px",
     borderRadius: "15px",
     textAlign: "center",
-    maxWidth: "600px",
-    wordWrap: "break-word",
-    overflowWrap: "break-word",
-    whiteSpace: "pre-wrap",
   },
   button: {
     marginTop: "20px",
     padding: "10px 20px",
     background: "black",
     color: "white",
-    border: "none",
     borderRadius: "8px",
-    cursor: "pointer",
   },
-  adminContainer: {
-  padding: "20px",
-},
-
-adminTitle: {
-  color: "white",
-  marginBottom: "15px",
-},
-
-adminCard: {
-  background: "rgba(255,255,255,0.15)",
-  padding: "20px",
-  borderRadius: "12px",
-  marginBottom: "15px",
-  backdropFilter: "blur(10px)",
-},
-
-row: {
-  display: "flex",
-  gap: "10px",
-  flexWrap: "wrap",
-},
-
-input: {
-  padding: "10px",
-  borderRadius: "8px",
-  border: "none",
-  outline: "none",
-  minWidth: "150px",
-},
-
-primaryButton: {
-  padding: "10px 15px",
-  borderRadius: "8px",
-  border: "none",
-  background: "#00d4ff",
-  color: "#000",
-  cursor: "pointer",
-  fontWeight: "bold",
-},
-header: {
-  display: "flex",
-  flexDirection: "column",   // 🔥 THIS IS THE KEY
-  alignItems: "center",
-  gap: "10px",
-  justifyContent: "space-between",
-  padding: "0 30px",
-},
-
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "10px",
+  },
+  
 //logo: {
   //width: "500px",
  // height:"200px",

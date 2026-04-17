@@ -399,6 +399,8 @@ header: {
   flexDirection: "column",   // 🔥 THIS IS THE KEY
   alignItems: "center",
   gap: "10px",
+  justifyContent: "space-between",
+  padding: "0 30px",
 },
 
 //logo: {

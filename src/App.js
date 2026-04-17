@@ -47,22 +47,41 @@ function App() {
   };
 
   // ================= LOGIN =================
-  const handleLogin = async () => {
-    const res = await fetch("https://flashcard-backend-4.onrender.com/api/users");
-    const users = await res.json();
+ const handleLogin = async () => {
+  console.log("LOGIN CLICKED");
 
-    const foundUser = users.find(
-      (u) => u.username === loginUsername && u.password === loginPassword
+  try {
+    const res = await fetch(
+      "https://flashcard-backend-4.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: loginUsername,
+          password: loginPassword,
+        }),
+      }
     );
 
-    if (foundUser) {
+    const data = await res.json();
+    console.log("LOGIN RESPONSE:", data);
+
+    if (res.ok) {
+      localStorage.setItem("user", JSON.stringify(data)); // ✅ THIS FIXES YOUR ISSUE
       setIsLoggedIn(true);
-      setIsAdmin(foundUser.role.toLowerCase() === "admin");
-      fetchUsers();
+
+      if (data.role === "admin") {
+        setIsAdmin(true);
+      }
     } else {
       alert("Invalid credentials");
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
 
   return (
     <div>

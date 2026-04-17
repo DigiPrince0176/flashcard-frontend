@@ -175,6 +175,11 @@ const visibleCards = cards.slice(start, end);
         {!isAdmin && <img src={logo} alt="logo" style={{ height: "100px" }} />}
 
         <h1 className="flashcard-title">Flashcards</h1>
+         {user && (
+    <div className="user-menu">
+      👤 {user.name}
+    </div>
+  )}
     </div>
 
       <div className="progress-bar">

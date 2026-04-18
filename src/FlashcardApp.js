@@ -267,15 +267,6 @@ function FlashcardApp({ isAdmin }) {
   </div>
 )}
 
-{/* FLASHCARD */}
-<div className="card-container" ref={ref}>
-  <Flashcard
-    key={cards[index]?.id}
-    question={cards[index]?.question}
-    answer={cards[index]?.answer}
-  />
-</div>
-
 {/* ADMIN BUTTONS BELOW CARD */}
 {isAdmin && (
   <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>

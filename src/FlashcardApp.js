@@ -222,6 +222,37 @@ function FlashcardApp({ isAdmin }) {
           answer={cards[index]?.answer}
         />
 
+       {isAdmin && (
+  <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
+    
+    <button
+      style={styles.editBtn}
+      onClick={() => {
+        setEditingCard(cards[index]);
+        setNewQuestion(cards[index].question);
+        setNewAnswer(cards[index].answer);
+      }}
+    >
+      ✏️ Edit
+    </button>
+
+    {editingCard && (
+      <button style={styles.updateBtn} onClick={updateCard}>
+        🔄 Update
+      </button>
+    )}
+
+    <button
+      style={styles.deleteBtn}
+      onClick={() => handleDelete(cards[index].id)}
+    >
+      🗑 Delete
+    </button>
+
+  </div>
+)}
+
+
         {/* NUMBER NAV */}
         <div className="number-nav">
           {cards

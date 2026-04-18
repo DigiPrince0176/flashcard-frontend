@@ -107,6 +107,20 @@ function FlashcardApp({ isAdmin }) {
     fetchCards();
   };
 
+    // ✅ LOAD DATA
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
+}, []);
+
+
+
   const nextCard = () => {
     if (animating) return;
 
@@ -221,6 +235,46 @@ function FlashcardApp({ isAdmin }) {
           question={cards[index]?.question}
           answer={cards[index]?.answer}
         />
+
+ {/* ADMIN PANEL */}
+      {isAdmin && (
+  <div style={styles.adminContainer}>
+    <h2 style={styles.adminTitle}>Admin Panel</h2>
+
+    <div style={styles.adminCard}>
+      <h3>Add Flashcard</h3>
+
+      <div style={styles.row}>
+        <input
+          placeholder="Question"
+          value={newQuestion}
+          onChange={(e) => setNewQuestion(e.target.value)}
+          style={styles.input}
+        />
+
+        <input
+          placeholder="Answer"
+          value={newAnswer}
+          onChange={(e) => setNewAnswer(e.target.value)}
+          style={styles.input}
+        />
+
+        <button onClick={addCard} style={styles.primaryButton}>
+          + Add Card
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+      <div className="card-container" ref={ref}>
+        <Flashcard
+          key={cards[index]?.id}
+          question={cards[index]?.question}
+          answer={cards[index]?.answer}
+        />
+
+
 
        {isAdmin && (
   <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>

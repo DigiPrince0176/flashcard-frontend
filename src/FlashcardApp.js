@@ -236,7 +236,8 @@ function FlashcardApp({ isAdmin }) {
         />
 
  {/* ADMIN PANEL */}
-      {isAdmin && (
+    {/* ADMIN PANEL - TOP */}
+{isAdmin && (
   <div style={styles.adminContainer}>
     <h2 style={styles.adminTitle}>Admin Panel</h2>
 
@@ -266,46 +267,47 @@ function FlashcardApp({ isAdmin }) {
   </div>
 )}
 
+{/* FLASHCARD */}
 <div className="card-container" ref={ref}>
   <Flashcard
     key={cards[index]?.id}
     question={cards[index]?.question}
     answer={cards[index]?.answer}
   />
+</div>
 
-  {isAdmin && (
-    <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
-      
-      <button
-        style={styles.editBtn}
-        onClick={() => {
-          if (!cards[index]) return;
+{/* ADMIN BUTTONS BELOW CARD */}
+{isAdmin && (
+  <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
+    
+    <button
+      style={styles.editBtn}
+      onClick={() => {
+        if (!cards[index]) return;
 
-          setEditingCard(cards[index]);
-          setNewQuestion(cards[index]?.question || "");
-          setNewAnswer(cards[index]?.answer || "");
-        }}
-      >
-        ✏️ Edit
+        setEditingCard(cards[index]);
+        setNewQuestion(cards[index]?.question || "");
+        setNewAnswer(cards[index]?.answer || "");
+      }}
+    >
+      ✏️ Edit
+    </button>
+
+    {editingCard && (
+      <button style={styles.updateBtn} onClick={updateCard}>
+        🔄 Update
       </button>
+    )}
 
-      {editingCard && (
-        <button style={styles.updateBtn} onClick={updateCard}>
-          🔄 Update
-        </button>
-      )}
+    <button
+      style={styles.deleteBtn}
+      onClick={() => handleDelete(cards[index]?.id)}
+    >
+      🗑 Delete
+    </button>
 
-      <button
-        style={styles.deleteBtn}
-        onClick={() => handleDelete(cards[index]?.id)}
-      >
-        🗑 Delete
-      </button>
-
-    </div>
-  )}
-</div>   {/* ✅ THIS IS IMPORTANT */}
-
+  </div>
+)}
 
         {/* NUMBER NAV */}
         <div className="number-nav">

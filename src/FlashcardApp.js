@@ -266,44 +266,45 @@ function FlashcardApp({ isAdmin }) {
   </div>
 )}
 
-      <div className="card-container" ref={ref}>
-        <Flashcard
-          key={cards[index]?.id}
-          question={cards[index]?.question}
-          answer={cards[index]?.answer}
-        />
+<div className="card-container" ref={ref}>
+  <Flashcard
+    key={cards[index]?.id}
+    question={cards[index]?.question}
+    answer={cards[index]?.answer}
+  />
 
+  {isAdmin && (
+    <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
+      
+      <button
+        style={styles.editBtn}
+        onClick={() => {
+          if (!cards[index]) return;
 
-
-       {isAdmin && (
-  <div style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "center" }}>
-    
-    <button
-      style={styles.editBtn}
-      onClick={() => {
-        setEditingCard(cards[index]);
-        setNewQuestion(cards[index].question);
-        setNewAnswer(cards[index].answer);
-      }}
-    >
-      ✏️ Edit
-    </button>
-
-    {editingCard && (
-      <button style={styles.updateBtn} onClick={updateCard}>
-        🔄 Update
+          setEditingCard(cards[index]);
+          setNewQuestion(cards[index]?.question || "");
+          setNewAnswer(cards[index]?.answer || "");
+        }}
+      >
+        ✏️ Edit
       </button>
-    )}
 
-    <button
-      style={styles.deleteBtn}
-      onClick={() => handleDelete(cards[index].id)}
-    >
-      🗑 Delete
-    </button>
+      {editingCard && (
+        <button style={styles.updateBtn} onClick={updateCard}>
+          🔄 Update
+        </button>
+      )}
 
-  </div>
-)}
+      <button
+        style={styles.deleteBtn}
+        onClick={() => handleDelete(cards[index]?.id)}
+      >
+        🗑 Delete
+      </button>
+
+    </div>
+  )}
+</div>   {/* ✅ THIS IS IMPORTANT */}
 
 
         {/* NUMBER NAV */}

@@ -444,7 +444,42 @@ buttons: {
   marginBottom: "40px",  /* 👈 pushes buttons UP */
 },
 
+adminContainer: {
+  marginTop: "20px",
+  textAlign: "center",
+},
 
+adminTitle: {
+  color: "white",
+},
+
+adminCard: {
+  background: "rgba(255,255,255,0.1)",
+  padding: "20px",
+  borderRadius: "10px",
+  marginBottom: "20px",
+},
+
+row: {
+  display: "flex",
+  justifyContent: "center",
+  gap: "10px",
+  marginTop: "10px",
+},
+
+input: {
+  padding: "8px",
+  borderRadius: "5px",
+  border: "none",
+},
+
+primaryButton: {
+  background: "#00e0ff",
+  border: "none",
+  padding: "8px 12px",
+  borderRadius: "5px",
+  cursor: "pointer",
+},
 
 };
 

@@ -80,10 +80,9 @@ function FlashcardApp({ isAdmin }) {
 
   // ✅ DELETE
   const handleDelete = async (id) => {
-    await fetch(
-      `https://flashcard-backend-4.onrender.com/api/flashcards/${id}`,
-      { method: "DELETE" }
-    );
+    await fetch(`https://flashcard-backend-4.onrender.com/api/flashcards/${id}`,{
+      method: "DELETE",
+      });
     fetchCards();
   };
 
